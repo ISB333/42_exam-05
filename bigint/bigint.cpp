@@ -4,7 +4,7 @@
 #include <ostream>
 #include <sstream>
 
-bigint::bigint() {}
+bigint::bigint() : num("") {}
 bigint::bigint(std::string str) : num(str) {}
 bigint::bigint(unsigned int number) {
     std::stringstream ss;
