@@ -1,8 +1,4 @@
 #include "bigint.hpp"
-#include <algorithm>
-#include <iostream>
-#include <ostream>
-#include <sstream>
 
 bigint::bigint() : num("") {}
 bigint::bigint(std::string str) : num(str) {}
@@ -11,10 +7,10 @@ bigint::bigint(unsigned int number) {
     ss << number;
     num = ss.str();
 }
-bigint::bigint(const bigint &other) { *this = other; }
-bigint& bigint::operator=(const bigint &other) {
-    if (this != &other)
-        num = other.num;
+bigint::bigint(const bigint &src) { *this = src; }
+bigint& bigint::operator=(const bigint &src) {
+    if (this != &src)
+        num = src.num;
     return *this;
 }
 bigint::~bigint() {}
@@ -24,9 +20,9 @@ std::ostream& operator<<(std::ostream &os, const bigint &src) {
     return os;
 }
 
-bigint bigint::operator+(const bigint &value1) const {
+bigint bigint::operator+(const bigint &src) const {
    const std::string &A = num; 
-   const std::string &B = value1.getStr(); 
+   const std::string &B = src.getStr(); 
 
     std::string res;
 
@@ -58,8 +54,8 @@ bigint bigint::operator+(const bigint &value1) const {
     return bigint(res);
 }
 
-bigint& bigint::operator+=(const bigint &value1) {
-    *this = *this + value1;
+bigint& bigint::operator+=(const bigint &src) {
+    *this = *this + src;
     return *this;
 }
 

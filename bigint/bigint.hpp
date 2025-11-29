@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdlib>
 #include <iostream>
-#include <ostream>
+#include <sstream>
 #include <string>
+#include <algorithm>
 
 class bigint {
 	private:
@@ -12,14 +12,14 @@ class bigint {
 		bigint();
 		bigint(std::string str);
 		bigint(unsigned int number);
-		bigint(const bigint &other);
-		bigint& operator=(const bigint &other);
+		bigint(const bigint &src);
+		bigint& operator=(const bigint &src);
 		~bigint();
 
 		std::string getStr() const {return num;}
 
-		bigint operator+(const bigint &value1) const;
-		bigint& operator+=(const bigint &value1) ;
+		bigint operator+(const bigint &src) const;
+		bigint& operator+=(const bigint &src) ;
 
 		bigint& operator++();
 		bigint operator++(int) ;

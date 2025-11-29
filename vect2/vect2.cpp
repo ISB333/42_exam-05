@@ -1,7 +1,7 @@
 #include "vect2.hpp"
 
 vect2::vect2() : x(0), y(0) {}
-vect2::vect2(int value1, int value2) : x(value1), y(value2) {}
+vect2::vect2(int xValue, int yValue) : x(xValue), y(yValue) {}
 vect2::vect2(const vect2 &src) {*this = src;}
 vect2& vect2::operator=(const vect2 &src) {
     if (this != &src) {

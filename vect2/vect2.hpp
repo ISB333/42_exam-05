@@ -8,7 +8,7 @@ class vect2 {
 		int y;
 	public:
 		vect2();
-		vect2(int value1, int value2);
+		vect2(int xValue, int yValue);
 		vect2(const vect2 &src);
 		vect2& operator=(const vect2 &src);
 		~vect2();
@@ -26,7 +26,6 @@ class vect2 {
 
 		vect2 operator+(const vect2 &src) const;
 		vect2& operator+=(const vect2 &src);
-
 		vect2 operator-(const vect2 &src) const;
 		vect2& operator-=(const vect2 &src);
 
