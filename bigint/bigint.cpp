@@ -1,149 +1,157 @@
 #include "bigint.hpp"
 
-bigint::bigint() : num("") {}
-bigint::bigint(std::string str) : num(str) {}
-bigint::bigint(unsigned int number) {
-    std::stringstream ss;
-    ss << number;
-    num = ss.str();
+using namespace std;
+
+bigint::bigint() : num("0") {}
+bigint::bigint(string str) : num(str) {}
+bigint::bigint(unsigned int n) {
+	stringstream ss;
+	ss << n;
+	num = ss.str();
 }
-bigint::bigint(const bigint &src) { *this = src; }
+bigint::bigint(const bigint &src) {*this = src;}
 bigint& bigint::operator=(const bigint &src) {
-    if (this != &src)
-        num = src.num;
-    return *this;
+	if (this != &src)
+		num = src.num;
+	return *this;
 }
 bigint::~bigint() {}
 
-std::ostream& operator<<(std::ostream &os, const bigint &src) {
-    os << src.getStr();
-    return os;
+ostream& operator<<(ostream &os, const bigint &src) {
+	os << src.getStr();
+	return os;
 }
 
 bigint bigint::operator+(const bigint &src) const {
-   const std::string &A = num; 
-   const std::string &B = src.getStr(); 
+	string A = num;
+	string B = src.getStr();
+	string res;
 
-    std::string res;
-
-    int i = (int)A.size() - 1;
-    int j = (int)B.size() - 1;
-    int carry = 0;
-
-    while (i >= 0 || j >= 0 || carry > 0)
-    {
-        int digitA = 0;
-        if (i >= 0)
-            digitA = A[i] - '0';
-
-        int digitB = 0;
-        if (j >= 0)
-            digitB = B[j] - '0';
-
-        int sum = digitA + digitB + carry;
-        int out_digit = sum % 10;
-        carry = sum / 10;
-
-        res.push_back(char('0' + out_digit));
-
-        i--;
-        j--;
-    }
-    std::reverse(res.begin(), res.end());
-
-    return bigint(res);
+	int carry = 0;
+	int i = A.size() - 1;
+	int j = B.size() - 1;
+	while (i >= 0 || j >= 0 || carry > 0) {
+		int digitA = 0;
+		int digitB = 0;
+		if  (i >= 0)
+			digitA = A[i] - '0';
+		if  (j >= 0)
+			digitB = B[j] - '0';
+		int sum = digitA + digitB + carry;
+		int outDigit = sum % 10;
+		carry = sum / 10;
+		res.push_back(char(outDigit + '0'));
+		i--;
+		j--;
+	}
+	reverse(res.begin(), res.end());
+	return bigint(res);
 }
 
 bigint& bigint::operator+=(const bigint &src) {
-    *this = *this + src;
-    return *this;
+	*this = *this + src;
+	return *this;
 }
 
 bigint& bigint::operator++() {
-    *this += bigint("1");
-    return *this;
+	*this = *this + bigint("1");
+	return *this;
 }
 
 bigint bigint::operator++(int) {
-    bigint tmp = *this;
-    *this += bigint("1");
-    return tmp;
+	bigint tmp = *this;
+	*this = *this + bigint("1");
+	return tmp;
 }
 
 bigint bigint::operator<<(unsigned int n) const {
-    bigint res = *this;
-    while (n--)
-        res.num.push_back('0');
-    return (res);
-}
-
-bigint bigint::operator>>(unsigned int n) const {
-    bigint res = *this;
-    while (n-- && !res.num.empty())
-        res.num.erase(res.num.size() - 1, 1);
-    return (res);
+	bigint tmp = *this;
+	while (n--)
+		tmp.num.push_back('0');
+	return tmp;	
 }
 
 bigint& bigint::operator<<=(unsigned int n) {
-    *this = *this << n;
-    return *this;
+	while (n--)
+		num.push_back('0');
+	return *this;	
+}
+
+bigint bigint::operator>>(unsigned int n) const {
+	bigint tmp = *this;
+	while (n-- && !tmp.num.empty())
+		tmp.num.erase(tmp.num.size() - 1, 1);
+	return tmp;	
 }
 
 bigint& bigint::operator>>=(unsigned int n) {
-    *this = *this >> n;
-    return *this;
+	while (n-- && !num.empty())
+		num.erase(num.size() - 1, 1);
+	return *this;	
 }
 
 bigint bigint::operator<<(const bigint &src) const {
-    std::stringstream ss(src.num);
-    unsigned int n;
-    ss >> n;
-    bigint res = *this;
-    while (n--)
-        res.num.push_back('0');
-    return (res);
-}
-
-bigint bigint::operator>>(const bigint &src) const {
-    std::stringstream ss(src.num);
-    unsigned int n;
-    ss >> n;
-    bigint res = *this;
-    while (n-- && !res.num.empty())
-        res.num.erase(res.num.size() - 1, 1);
-    return (res);
+	stringstream ss(src.getStr());
+	unsigned int n;
+	ss >> n;
+	bigint tmp = *this;
+	while (n--)
+		tmp.num.push_back('0');
+	return tmp;	
 }
 
 bigint& bigint::operator<<=(const bigint &src) {
-    *this = *this << src.num;
-    return *this;
+	stringstream ss(src.getStr());
+	unsigned int n;
+	ss >> n;
+	while (n--)
+		num.push_back('0');
+	return *this;	
+}
+
+bigint bigint::operator>>(const bigint &src) const {
+	stringstream ss(src.getStr());
+	unsigned int n;
+	ss >> n;
+	bigint tmp = *this;
+	while (n-- && !tmp.num.empty())
+		tmp.num.erase(tmp.num.size() - 1, 1);
+	return tmp;	
 }
 
 bigint& bigint::operator>>=(const bigint &src) {
-    *this = *this >> src.num;
-    return *this;
+	stringstream ss(src.getStr());
+	unsigned int n;
+	ss >> n;
+	while (n-- && !num.empty())
+		num.erase(num.size() - 1, 1);
+	return *this;	
 }
 
 bool bigint::operator>(const bigint &src) const {
-    return this->num > src.num;
-}
-
-bool bigint::operator<(const bigint &src) const {
-    return this->num < src.num;
+	if (num.size() != src.getStr().size())
+		return num.size() > src.getStr().size();
+	return num > src.getStr();
 }
 
 bool bigint::operator>=(const bigint &src) const {
-    return this->num >= src.num;
+	return (*this > src) || (*this == src);
+}
+
+bool bigint::operator<(const bigint &src) const {
+	if (num.size() != src.getStr().size())
+		return num.size() < src.getStr().size();
+	return num < src.getStr();
 }
 
 bool bigint::operator<=(const bigint &src) const {
-    return this->num <= src.num;
+	return (*this < src) || (*this == src);
 }
 
 bool bigint::operator==(const bigint &src) const {
-    return this->num == src.num;
+	return num == src.getStr();
 }
 
 bool bigint::operator!=(const bigint &src) const {
-    return this->num != src.num;
+	return num != src.getStr();	
 }

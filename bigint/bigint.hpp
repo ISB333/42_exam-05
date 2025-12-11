@@ -3,43 +3,46 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstdlib>
 #include <algorithm>
+
+using namespace std;
 
 class bigint {
 	private:
-		std::string num;
+		string num;
 	public:
 		bigint();
-		bigint(std::string str);
-		bigint(unsigned int number);
+		bigint(unsigned int n);
+		bigint(string str);
 		bigint(const bigint &src);
 		bigint& operator=(const bigint &src);
 		~bigint();
 
-		std::string getStr() const {return num;}
+		string getStr() const {return num;}
 
 		bigint operator+(const bigint &src) const;
-		bigint& operator+=(const bigint &src) ;
+		bigint& operator+=(const bigint &src);
 
 		bigint& operator++();
-		bigint operator++(int) ;
+		bigint operator++(int);
 
-		bigint operator>>(unsigned int n) const;
 		bigint operator<<(unsigned int n) const;
-		bigint& operator>>=(unsigned int n);
 		bigint& operator<<=(unsigned int n);
+		bigint operator>>(unsigned int n) const;
+		bigint& operator>>=(unsigned int n);
 
-		bigint operator>>(const bigint &src) const;
 		bigint operator<<(const bigint &src) const;
-		bigint& operator>>=(const bigint &src);
 		bigint& operator<<=(const bigint &src);
+		bigint operator>>(const bigint &src) const;
+		bigint& operator>>=(const bigint &src);
 
-		bool operator>(const bigint &src) const;
 		bool operator<(const bigint &src) const;
-		bool operator>=(const bigint &src) const;
 		bool operator<=(const bigint &src) const;
+		bool operator>(const bigint &src) const;
+		bool operator>=(const bigint &src) const;
 		bool operator==(const bigint &src) const;
 		bool operator!=(const bigint &src) const;
 };
 
-std::ostream& operator<<(std::ostream &os, const bigint &src);
+ostream& operator<<(ostream &os, const bigint &src);
