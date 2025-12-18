@@ -44,34 +44,35 @@ int isInvalidMap() {
     return cols = LEN(map[0]), 0;
 }
 
-int canPlaceSquare(int row, int col, int size) {
-    if (row + size > rows || col + size > cols)
+int canPlaceSquare(int y, int x, int size) {
+    if (y + size > rows || x + size > cols)
         return 0;
-    
-    for (int i = row; i < row + size; i++)
-        for (int j = col; j < col + size; j++)
-            if (map[i][j] != empty)
+    for (int yy = y; yy < y + size; yy++) {
+        for (int xx = x; xx < x + size; xx++) {
+            if (map[yy][xx] != empty)
                 return 0;
+        }
+    }
     return 1;
 }
 
 void findBiggestSquare() {
-    int max_size = 0, best_row = 0, best_col = 0;
-    
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-            for (int size = max_size + 1; size <= rows && size <= cols; size++)
-                if (canPlaceSquare(i, j, size)) {
+    int max_size = 0, best_y = 0, best_x = 0;
+
+    for (int y = 0; y < rows; y++)
+        for (int x = 0; x < cols; x++)
+            for (int size = max_size + 1; size <= rows && size <= cols; size++) {
+                if (canPlaceSquare(y, x, size)) {
                     max_size = size;
-                    best_row = i;
-                    best_col = j;
+                    best_y = y;
+                    best_x = x;
                 } else {
-                    break;
+                        break;
                 }
-    
-    for (int i = best_row; i < best_row + max_size; i++)
-        for (int j = best_col; j < best_col + max_size; j++)
-            map[i][j] = full;
+            }
+    for (int y = best_y; y < best_y + max_size; y++)
+        for (int x = best_x; x < best_x + max_size; x++)
+            map[y][x] = full;
 }
 
 void init(FILE *file) {
@@ -106,12 +107,23 @@ int	main(int argc, char *argv[]) {
 	if (argc > 2)
 		return (fprintf(stderr, "map error\n"));
 	if (argc == 1)
-		return (1);
+        solveBSQ(stdin);
+    else {
+        FILE *file = fopen(argv[1], "r");
+        if (!file)
+            fprintf(stderr, "map error\n");
 
-	FILE *file = fopen(argv[1], "r");
-	if (!file)
-		fprintf(stderr, "map error\n");
+        solveBSQ(file);
+        fclose(file);
 
-	solveBSQ(file);
-	fclose(file);
+    }
+
 }
+
+/*
+1. open file or listen (fopen, fscanf)
+2. check map validity
+3. findBiggestSquare
+3.1 
+
+*/
